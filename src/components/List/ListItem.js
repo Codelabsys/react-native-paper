@@ -3,10 +3,6 @@
 import color from 'color';
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import type {
-  ViewStyleProp,
-  TextStyleProp,
-} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import TouchableRipple from '../TouchableRipple';
 import Text from '../Typography/Text';
 import { withTheme } from '../../core/theming';
@@ -17,46 +13,27 @@ type Props = $RemoveChildren<typeof TouchableRipple> & {|
    * Title text for the list item.
    */
   title: React.Node,
-  /**
-   * Description text for the list item.
-   */
-  description?: React.Node,
-  /**
-   * Callback which returns a React element to display on the left side.
-   */
-  left?: (props: { color: string }) => React.Node,
-  /**
-   * Callback which returns a React element to display on the right side.
-   */
-  right?: (props: { color: string }) => React.Node,
-  /**
-   * Function to execute on press.
-   */
-  onPress?: () => mixed,
-  /**
-   * @optional
-   */
-  theme: Theme,
-  /**
-   * Style that is passed to the wrapping TouchableRipple element.
-   */
-  style?: ViewStyleProp,
-  /**
-   * Style that is passed to Title element.
-   */
-  titleStyle?: TextStyleProp,
-  /**
-   * Style that is passed to Description element.
-   */
-  descriptionStyle?: TextStyleProp,
-  /**
-   * Ellipsize Mode for the Title
-   */
-  titleEllipsizeMode?: 'head' | 'middle' | 'tail' | 'clip',
-  /**
-   * Ellipsize Mode for the Description
-   */
-  descriptionEllipsizeMode?: 'head' | 'middle' | 'tail' | 'clip',
+    /**
+     * Description text for the list item.
+     */
+    description ?: React.Node,
+    /**
+     * Callback which returns a React element to display on the left side.
+     */
+    left ?: (props: { color: string }) => React.Node,
+    /**
+     * Callback which returns a React element to display on the right side.
+     */
+    right ?: (props: { color: string }) => React.Node,
+    /**
+     * Function to execute on press.
+     */
+    onPress ?: () => mixed,
+    /**
+     * @optional
+     */
+    theme: Theme,
+      style ?: any,
 |};
 
 /**
@@ -96,10 +73,6 @@ class ListItem extends React.Component<Props> {
       onPress,
       theme,
       style,
-      titleStyle,
-      descriptionStyle,
-      titleEllipsizeMode,
-      descriptionEllipsizeMode,
       ...rest
     } = this.props;
     const titleColor = color(theme.colors.text)
@@ -121,22 +94,23 @@ class ListItem extends React.Component<Props> {
           {left ? left({ color: descriptionColor }) : null}
           <View style={[styles.item, styles.content]} pointerEvents="none">
             <Text
-              ellipsizeMode={titleEllipsizeMode}
               numberOfLines={1}
-              style={[styles.title, { color: titleColor }, titleStyle]}
+              style={[styles.title,
+              { color: titleColor },
+              style && style.titleStyle ? style.titleStyle : {},
+              ]}
             >
               {title}
             </Text>
             {description ? (
               <Text
-                ellipsizeMode={descriptionEllipsizeMode}
                 numberOfLines={2}
                 style={[
                   styles.description,
                   {
                     color: descriptionColor,
                   },
-                  descriptionStyle,
+                  style && style.descriptionStyle ? style.descriptionStyle : {},
                 ]}
               >
                 {description}
